@@ -31,5 +31,9 @@ jobs:
           flutter-version: '3.3.10'
           channel: 'stable'
 
+      - if: ${{ matrix.target == 'linux' }}
+        name: Install Ninja
+        uses: seanmiddleditch/gha-setup-ninja@master
+
       - name: Build
         run: flutter build ${{ matrix.target }} --release -v
