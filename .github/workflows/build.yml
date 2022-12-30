@@ -49,3 +49,23 @@ jobs:
         with:
           name: build-${{ matrix.target }}-${{ matrix.arch }}
           path: build/windows/runner/Release
+      
+      - if: ${{ matrix.target == 'macos' }}
+        name: 'MacOS: Tar results'
+        run: >-
+          tar cvf build-${{ matrix.target }}-${{ matrix.arch }}.tar
+          build/macos/Build/Products/Release/*.app
+
+      - if: ${{ matrix.target == 'linux' }}
+        name: 'Linux: Tar results'
+        run: >-
+          tar cvf build-${{ matrix.target }}-${{ matrix.arch }}.tar
+          build/linux/*/release/bundle
+
+      - if: ${{ matrix.target != 'windows' }}
+        name: 'Upload Tar'
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-${{ matrix.target }}-${{ matrix.arch }}
+          path: build-${{ matrix.target }}-${{ matrix.arch }}.tar
+
