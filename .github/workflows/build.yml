@@ -54,13 +54,13 @@ jobs:
         name: 'MacOS: Tar results'
         run: >-
           tar cvf build-${{ matrix.target }}-${{ matrix.arch }}.tar
-          build/macos/Build/Products/Release/*.app
+          -C build/macos/Build/Products/Release flutter_demo.app
 
       - if: ${{ matrix.target == 'linux' }}
         name: 'Linux: Tar results'
         run: >-
           tar cvf build-${{ matrix.target }}-${{ matrix.arch }}.tar
-          build/linux/*/release/bundle
+          -C build/linux/*/release bundle
 
       - if: ${{ matrix.target != 'windows' }}
         name: 'Upload Tar'
