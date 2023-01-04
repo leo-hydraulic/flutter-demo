@@ -10,9 +10,11 @@ jobs:
           - arch: aarch64
             os: macos-11
             target: macos
+            lipo-arch: arm64
           - arch: amd64
             os: macos-11
             target: macos
+            lipo-arch: x86_64
           - arch: amd64
             os: windows-2019 
             target: windows
@@ -42,6 +44,13 @@ jobs:
 
       - name: Build
         run: flutter build ${{ matrix.target }} --release -v
+
+      - if: ${{ matrix.target == 'macos' }}
+        name: 'MacOS: Thin binary'
+        run: >-
+          lipo build/macos/Build/Products/Release/flutter_demo.app/Contents/MacOS/flutter_demo
+          -output build/macos/Build/Products/Release/flutter_demo.app/Contents/MacOS/flutter_demo
+          -thin ${{ matrix.lipo-arch }}
 
       - if: ${{ matrix.target == 'windows' }}
         name: 'Windows: Upload artifact'
