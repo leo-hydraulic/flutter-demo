@@ -33,14 +33,16 @@ runs:
         
     - name: Download Conveyor
       if: ${{ steps.load-from-cache.outputs.cache-hit != 'true' }}
+      shell: bash
       run: |
         wget https://downloads.hydraulic.dev/conveyor/conveyor-7.1-linux-amd64.tar.gz
         mkdir -p ${{ inputs.cache_path }}/install
-        tar xzvf conveyor-7.1-linux-amd64.tar.gz -C ${{ inputs.cache_path }}/install
+        tar xzvf conveyor-7.1-linux-amd64.tar.gz -C ${{ inputs.cache_path }}/install      
           
     - name: Run Conveyor
       env:
-        SIGNING_KEY: ${{ inputs.signing_key }}      
+        SIGNING_KEY: ${{ inputs.signing_key }}
+      shell: bash
       run: |
         if [ -z "$SIGNING_KEY" ]; then
           KEY="-Kapp.sign=false"
