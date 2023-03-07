@@ -17,4 +17,4 @@ jobs:
       - name: Run Conveyor
         env:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
-        run: conveyor --agree-to-license=1 --passphrase= -Kapp.signing-key='${env:SIGNING_KEY}' make site
+        run: conveyor --agree-to-license=1 --passphrase= -Kapp.signing-key="$SIGNING_KEY" make site
