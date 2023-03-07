@@ -28,10 +28,11 @@ runs:
   steps:
     - name: Load cache
       id: load-cache
-      uses: actions/cache/restore@v3
+      uses: actions/cache@v3
       with:
-        key: ${{ inputs.cache_key }}
+        key: ${{ inputs.cache_key }}-${{github.run_id }}
         path: ${{ inputs.cache_path }}
+        restore-keys: ${{ inputs.cache_key }}
         
     - name: Download Conveyor
       if: ${{ steps.load-from-cache.outputs.cache-hit != 'true' }}
@@ -52,12 +53,4 @@ runs:
           KEY="-Kapp.signing-key=$SIGNING_KEY"
         fi
         PATH="$PATH:${{ inputs.cache_path }}/install/conveyor-${{ inputs.conveyor_version }}/bin"
-        conveyor --cache-dir=${{ inputs.cache_path }}/cache --agree-to-license=1 "$KEY" ${{ inputs.extra_flags }} ${{ inputs.command }}
-        
-    - name: Save cache
-      id: save-cache
-      uses: actions/cache/save@v3
-      with:
-        key: ${{ inputs.cache_key }}
-        path: ${{ inputs.cache_path }}
-        
+        conveyor --cache-dir=${{ inputs.cache_path }}/cache --agree-to-license=1 "$KEY" ${{ inputs.extra_flags }} ${{ inputs.command }}    
