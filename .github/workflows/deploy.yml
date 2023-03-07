@@ -14,4 +14,4 @@ jobs:
           unzip conveyor-7.1-mac-amd64.zip -d install
           
       - name: Run Conveyor
-        run: install/Conveyor.app/Contents/MacOS/conveyor make site
+        run: install/Conveyor.app/Contents/MacOS/conveyor --agree-to-license=1 make site
