@@ -14,14 +14,12 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
           
-  run_conveyor:
-    needs: deploy
-    uses: ./.github/workflows/conveyor.yml
-    with:
-      command: make site
-      # extra_flags: -Kapp.site.copy-to="${{ secrets.COPY_TO }}"
-    secrets:
-      signing_key: ${{ secrets.SIGNING_KEY }}
+      - name: Run Conveyor     
+        uses: leo-hydraulic/flutter-demo@v1
+        with:
+          command: make site
+          extra_flags: -Kapp.site.copy-to="${{ secrets.COPY_TO }}"
+          signing_key: ${{ secrets.SIGNING_KEY }}
           
 
         
