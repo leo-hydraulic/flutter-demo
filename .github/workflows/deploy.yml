@@ -12,6 +12,7 @@ jobs:
         run: |
           wget https://downloads.hydraulic.dev/conveyor/conveyor-7.1-mac-amd64.zip
           unzip conveyor-7.1-mac-amd64.zip -d install
+          export PATH="$PATH:$PWD/install/Conveyor.app/Contents/MacOS"
           
       - name: Run Conveyor
         run: install/Conveyor.app/Contents/MacOS/conveyor --agree-to-license=1 make site
