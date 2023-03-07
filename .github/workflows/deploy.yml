@@ -13,7 +13,13 @@ jobs:
           wget https://downloads.hydraulic.dev/conveyor/conveyor-7.1-linux-amd64.tar.gz
           mkdir install
           tar xzvf conveyor-7.1-linux-amd64.tar.gz -C install
-          echo "$PWD/install/conveyor-7.1/bin" >> $GITHUB_PATH          
+          echo "$PWD/install/conveyor-7.1/bin" >> $GITHUB_PATH
+          
+      - name: Setup SSH
+        env:
+          KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS }}
+        run: |
+          echo "$KNOWN_HOSTS" >> ~/.ssh/known_hosts
           
       - name: Run Conveyor
         env:
