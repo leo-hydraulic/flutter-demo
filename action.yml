@@ -1,0 +1,52 @@
+name: Conveyor
+inputs:
+  command:
+    type: string
+    required: true
+  extra_flags:        
+    type: string
+    required: false
+  cache_key:
+    type: string
+    required: false
+    default: 'conveyor'
+  cache_path:
+    type: string
+    required: false
+    default: '.conveyor'
+  signing_key:
+    type: string
+    required: false
+        
+runs:
+  using: "composite"
+  #runs-on: ubuntu-latest
+  #env:
+  #  CONVEYOR_VERSION: '7.1'
+  steps:
+    - name: Load Conveyor from cache
+      id: load-from-cache
+      uses: actions/cache@v3
+      with:
+        key: ${{ inputs.cache_key }}
+        path: ${{ inputs.cache_path }}
+        
+    - name: Download Conveyor
+      if: ${{ steps.load-from-cache.outputs.cache-hit != 'true' }}
+      run: |
+        wget https://downloads.hydraulic.dev/conveyor/conveyor-7.1-linux-amd64.tar.gz
+        mkdir -p ${{ inputs.cache_path }}/install
+        tar xzvf conveyor-7.1-linux-amd64.tar.gz -C ${{ inputs.cache_path }}/install
+          
+    - name: Run Conveyor
+      env:
+        SIGNING_KEY: ${{ inputs.signing_key }}      
+      run: |
+        if [ -z "$SIGNING_KEY" ]; then
+          KEY="-Kapp.sign=false"
+        else
+          KEY="-Kapp.signing-key=$SIGNING_KEY"
+        fi
+        PATH="$PATH:${{ inputs.cache_path }}/install/conveyor-7.1/bin"
+        conveyor --cache-dir=${{ inputs.cache_path }}/cache --agree-to-license=1 "$KEY" ${{ inputs.extra_flags }} ${{ inputs.command }}
+        
