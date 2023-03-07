@@ -16,10 +16,10 @@ jobs:
           echo "$PWD/install/conveyor-7.1/bin" >> $GITHUB_PATH
           
       - name: Setup SSH
-        env:
-          KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS }}
-        run: |
-          echo "$KNOWN_HOSTS" >> ~/.ssh/known_hosts
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}        
           
       - name: Run Conveyor
         env:
