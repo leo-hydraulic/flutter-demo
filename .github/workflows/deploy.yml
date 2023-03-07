@@ -15,4 +15,4 @@ jobs:
           echo "$PWD/install/Conveyor.app/Contents/MacOS" >> $GITHUB_PATH          
           
       - name: Run Conveyor
-        run: conveyor --agree-to-license=1 --passphrase= make site
+        run: conveyor --agree-to-license=1 --passphrase= -Kapp.signing-key="${{ secrets.SIGNING_KEY }}" make site
