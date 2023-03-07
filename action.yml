@@ -34,23 +34,19 @@ runs:
         path: ${{ inputs.cache_path }}
         restore-keys: ${{ inputs.cache_key }}
         
-    - name: Download Conveyor
-      if: ${{ steps.load-from-cache.outputs.cache-hit != 'true' }}
+    - name: Download Conveyor      
       shell: bash
       run: |
-        wget https://downloads.hydraulic.dev/conveyor/conveyor-${{ inputs.conveyor_version }}-linux-amd64.tar.gz
-        mkdir -p ${{ inputs.cache_path }}/install
-        tar xzvf conveyor-${{ inputs.conveyor_version }}-linux-amd64.tar.gz -C ${{ inputs.cache_path }}/install      
+        if [ ! -d "${{ inputs.cache_path }}" ]; then
+          wget https://downloads.hydraulic.dev/conveyor/conveyor-${{ inputs.conveyor_version }}-linux-amd64.tar.gz
+          mkdir -p ${{ inputs.cache_path }}/install
+          tar xzvf conveyor-${{ inputs.conveyor_version }}-linux-amd64.tar.gz -C ${{ inputs.cache_path }}/install      
+        fi
           
     - name: Run Conveyor
       env:
         SIGNING_KEY: ${{ inputs.signing_key }}
       shell: bash
-      run: |
-        if [ -z "$SIGNING_KEY" ]; then
-          KEY="-Kapp.sign=false"
-        else
-          KEY="-Kapp.signing-key=$SIGNING_KEY"
-        fi
+      run: |        
         PATH="$PATH:${{ inputs.cache_path }}/install/conveyor-${{ inputs.conveyor_version }}/bin"
-        conveyor --cache-dir=${{ inputs.cache_path }}/cache --agree-to-license=1 "$KEY" ${{ inputs.extra_flags }} ${{ inputs.command }}    
+        conveyor --cache-dir=${{ inputs.cache_path }}/cache --agree-to-license=1 "-Kapp.signing-key=$SIGNING_KEY" ${{ inputs.extra_flags }} ${{ inputs.command }}    
