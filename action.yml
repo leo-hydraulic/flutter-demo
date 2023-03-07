@@ -26,9 +26,9 @@ runs:
   using: "composite"
   
   steps:
-    - name: Load Conveyor from cache
-      id: load-from-cache
-      uses: actions/cache@v3
+    - name: Load cache
+      id: load-cache
+      uses: actions/cache/restore@v3
       with:
         key: ${{ inputs.cache_key }}
         path: ${{ inputs.cache_path }}
@@ -53,4 +53,11 @@ runs:
         fi
         PATH="$PATH:${{ inputs.cache_path }}/install/conveyor-${{ inputs.conveyor_version }}/bin"
         conveyor --cache-dir=${{ inputs.cache_path }}/cache --agree-to-license=1 "$KEY" ${{ inputs.extra_flags }} ${{ inputs.command }}
+        
+    - name: Save cache
+      id: save-cache
+      uses: actions/cache/save@v3
+      with:
+        key: ${{ inputs.cache_key }}
+        path: ${{ inputs.cache_path }}
         
