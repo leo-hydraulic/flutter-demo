@@ -18,4 +18,5 @@ jobs:
       - name: Run Conveyor
         env:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
-        run: conveyor --agree-to-license=1 -Kapp.signing-key="$SIGNING_KEY" make site
+          COPY_TO: ${{ secrets.COPY_TO }}
+        run: conveyor --agree-to-license=1 -Kapp.signing-key="$SIGNING_KEY" -Kapp.site.copy-to="$COPY_TO" make site
