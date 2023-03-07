@@ -8,34 +8,45 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         
-      - name: Load Conveyor from cache
-        id: load-from-cache
-        uses: actions/cache@v3
-        with:
-          key: conveyor
-          path: .conveyor        
-        
-      - name: Download Conveyor
-        if: ${{ steps.load-from-cache.outputs.cache-hit != 'true' }}
-        run: |
-          wget https://downloads.hydraulic.dev/conveyor/conveyor-7.1-linux-amd64.tar.gz
-          mkdir -p .conveyor/install
-          tar xzvf conveyor-7.1-linux-amd64.tar.gz -C .conveyor/install
-          
-      - name: Set up PATH
-        run:
-          echo "$PWD/.conveyor/install/conveyor-7.1/bin" >> $GITHUB_PATH
-          
-      - name: Setup SSH
+      - name: Set up SSH
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_KEY }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}        
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
           
-      - name: Run Conveyor
-        env:
-          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
-          COPY_TO: ${{ secrets.COPY_TO }}
-        run: |
-          conveyor --cache-dir=.conveyor/.cache --agree-to-license=1 -Kapp.signing-key="$SIGNING_KEY" -Kapp.site.copy-to="$COPY_TO" make copied-site
+  run_conveyor:
+    uses: ./.github/workflows/conveyor
+    with:
+      command: make copied-site
+      extra_flags: -Kapp.site.copy-to="${{ secrets.COPY_TO }}"
+    secrets:
+      signing_key: ${{ secrets.SIGNING_KEY }}
+          
+
+        
+#      - name: Load Conveyor from cache
+#        id: load-from-cache
+#        uses: actions/cache@v3
+#        with:
+#          key: conveyor
+#          path: .conveyor        
+        
+#      - name: Download Conveyor
+#        if: ${{ steps.load-from-cache.outputs.cache-hit != 'true' }}
+#       run: |
+#          wget https://downloads.hydraulic.dev/conveyor/conveyor-7.1-linux-amd64.tar.gz
+#          mkdir -p .conveyor/install
+#          tar xzvf conveyor-7.1-linux-amd64.tar.gz -C .conveyor/install
+          
+#      - name: Set up PATH
+#        run:
+#          echo "$PWD/.conveyor/install/conveyor-7.1/bin" >> $GITHUB_PATH
+          
+          
+#      - name: Run Conveyor
+#        env:
+#          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+#          COPY_TO: ${{ secrets.COPY_TO }}
+#        run: |
+#          conveyor --cache-dir=.conveyor/.cache --agree-to-license=1 -Kapp.signing-key="$SIGNING_KEY" -Kapp.site.copy-to="$COPY_TO" make copied-site
           
