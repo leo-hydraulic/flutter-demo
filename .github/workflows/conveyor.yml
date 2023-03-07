@@ -50,7 +50,7 @@ jobs:
           if [ -z "$SIGNING_KEY" ]; then
             KEY="-Kapp.sign=false"
           else
-            KEY="-Kapp.signing-key="$SIGNING_KEY"
+            KEY="-Kapp.signing-key=$SIGNING_KEY"
           fi
           PATH="$PATH:${{ inputs.cache_path }}/install/conveyor-${CONVEYOR_VERSION}/bin"
           conveyor --cache-dir=${{ inputs.cache_path }}/cache --agree-to-license=1 "$KEY" ${{ inputs.extra_flags }} ${{ inputs.command }}
