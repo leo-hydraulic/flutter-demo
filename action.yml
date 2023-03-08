@@ -4,7 +4,8 @@ inputs:
   command:
     description: 'Which conveyor command to execute. For example, "make copied-site"'
     type: string
-    required: true
+    required: false
+    default: 'make site'
     
   signing_key:
     description: 'The root signing key for your application, corresponding to config key "app.signing-key"'
@@ -47,11 +48,7 @@ runs:
     # Workaround to https://github.com/actions/runner/issues/1070
     - name: Check inputs
       shell: bash
-      run: |
-        if [ -z "${{ inputs.command }}" ]; then
-          echo "Missing required input: command"
-          exit 1
-        fi
+      run: |        
         if [ -z "${{ inputs.signing_key }}" ]; then
           echo "Missing required input: signing_key"
           exit 1
