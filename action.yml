@@ -57,6 +57,10 @@ runs:
           echo "Missing required input: agree_to_license"
           exit 1
         fi
+        if [ "${{ runner.os }}" != "linux" ]; then
+          echo "This action must be run in a Linux runner"
+          exit 1
+        fi
       
     - name: Load cache      
       uses: actions/cache@v3
