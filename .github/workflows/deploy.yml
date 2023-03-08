@@ -27,7 +27,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-windows-amd64
-          path: ./artifacts
+          path: ./artifacts/windows
           
       - name: Download macOS AMD64 build
         uses: actions/download-artifact@v3
