@@ -8,6 +8,30 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         
+      - name: Download macOS ARM build
+        uses: actions/download-artifact@v3
+        with:
+          name: build-macos-aarch64
+          path: ./artifacts
+          
+      - name: Download macOS AMD64 build
+        uses: actions/download-artifact@v3
+        with:
+          name: build-macos-amd64
+          path: ./artifacts
+          
+      - name: Download Windows build
+        uses: actions/download-artifact@v3
+        with:
+          name: build-windows-amd64
+          path: ./artifacts
+          
+      - name: Download macOS AMD64 build
+        uses: actions/download-artifact@v3
+        with:
+          name: build-linux-amd64
+          path: ./artifacts          
+        
       - name: Set up SSH
         uses: shimataro/ssh-key-action@v2
         with:
