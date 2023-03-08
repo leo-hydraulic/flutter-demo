@@ -17,6 +17,7 @@ inputs:
       You must agree with the license to run Conveyor. Current version is 1.
     type: number
     required: true
+    default: error
     
   extra_flags:
     description: Additional flags to pass to Conveyor.
