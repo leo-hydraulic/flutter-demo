@@ -29,7 +29,7 @@ jobs:
           name: build-windows-amd64
           path: ./artifacts/windows
           
-      - name: Download macOS AMD64 build
+      - name: Download Linux AMD64 build
         uses: actions/download-artifact@v3
         with:
           name: build-linux-amd64
