@@ -1,30 +1,48 @@
-name: Conveyor
+name: 'Conveyor'
+description: 'Download, install and run Conveyor'
 inputs:
   command:
+    description: 'Which conveyor command to execute. For example, "make copied-site"'
     type: string
     required: true
+    
   signing_key:
+    description: 'The root signing key for your application, corresponding to config key "app.signing-key"'
     type: string
     required: true
-  extra_flags:        
+    
+  agree_to_license:
+    description: >
+      The version of the [Conveyor license](https://hydraulic.software/eula.html) you agree to.
+      You must agree with the license to run Conveyor. Current version is 1.
+    type: number
+    required: true
+    
+  extra_flags:
+    description: Additional flags to pass to Conveyor.
     type: string
     required: false
+    
   cache_key:
+    description: Optional cache key used to store the Conveyor installation and task cache.
     type: string
     required: false
     default: 'conveyor'
+    
   cache_path:
+    description: Optional path to the location where Conveyor will be installed and keep the task cache.
     type: string
     required: false
-    default: '.conveyor'  
+    default: '.conveyor'
+    
   conveyor_version:
+    description: Version of Conveyor to run.
     type: string
     required: false
     default: '7.1'
-        
+    
 runs:
-  using: "composite"
-  
+  using: composite  
   steps:
     - name: Load cache
       id: load-cache
@@ -46,7 +64,8 @@ runs:
     - name: Run Conveyor
       env:
         SIGNING_KEY: ${{ inputs.signing_key }}
+        CONVEYOR_AGREE_TO_LICENSE: ${{ inputs.agree_to_license }}
       shell: bash
       run: |        
         PATH="$PATH:${{ inputs.cache_path }}/install/conveyor-${{ inputs.conveyor_version }}/bin"
-        conveyor --cache-dir=${{ inputs.cache_path }}/cache --agree-to-license=1 "-Kapp.signing-key=$SIGNING_KEY" ${{ inputs.extra_flags }} ${{ inputs.command }}    
+        conveyor --cache-dir=${{ inputs.cache_path }}/cache "-Kapp.signing-key=$SIGNING_KEY" ${{ inputs.extra_flags }} ${{ inputs.command }}    
