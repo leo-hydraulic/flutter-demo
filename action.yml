@@ -15,9 +15,8 @@ inputs:
     description: >
       The version of the [Conveyor license](https://hydraulic.software/eula.html) you agree to.
       You must agree with the license to run Conveyor. Current version is 1.
-    type: number
-    required: true
-    default: error
+    type: string
+    required: true    
     
   extra_flags:
     description: Additional flags to pass to Conveyor.
@@ -44,9 +43,25 @@ inputs:
     
 runs:
   using: composite  
-  steps:
-    - name: Load cache
-      id: load-cache
+  steps:    
+    # Workaround to https://github.com/actions/runner/issues/1070
+    - name: Check inputs
+      shell: bash
+      run: |
+        if [ -z "${{ inputs.command }}" ]; then
+          echo "Missing required input: command"
+          exit 1
+        fi
+        if [ -z "${{ inputs.signing_key }}" ]; then
+          echo "Missing required input: signing_key"
+          exit 1
+        fi
+        if [ -z "${{ inputs.agree_to_license }}" ]; then
+          echo "Missing required input: agree_to_license"
+          exit 1
+        fi
+      
+    - name: Load cache      
       uses: actions/cache@v3
       with:
         key: ${{ inputs.cache_key }}-${{github.run_id }}
