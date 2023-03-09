@@ -1,4 +1,4 @@
-name: Flutter Deploy
+name: Deploy to SSH
 
 on: [workflow_dispatch]
 jobs:
