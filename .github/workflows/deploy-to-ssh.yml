@@ -43,7 +43,7 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
           
       - name: Run Conveyor     
-        uses: leo-hydraulic/flutter-demo@v1
+        uses: hydraulic-software/conveyor/actions/build@v1
         with:
           command: make copied-site
           extra_flags: -Kapp.site.copy-to="${{ secrets.COPY_TO }}"
