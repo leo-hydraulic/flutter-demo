@@ -38,6 +38,8 @@ jobs:
         
       - name: Run Conveyor     
         uses: hydraulic-software/conveyor/actions/build@v9.1
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           command: make copied-site
           extra_flags: -Kapp.site.copy-to="${{ secrets.COPY_TO }}"
