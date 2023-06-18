@@ -1,0 +1,12 @@
+name: Debugging
+on: workflow_dispatch
+jobs:
+  test:
+    runs-on: windos-2019
+    steps:
+      - name: Test
+        env:
+          ENV_SECRET: ${{ secrets.SUPER_SECRET }}
+        run: |
+          echo $Env.ENV_SECRET
+        
