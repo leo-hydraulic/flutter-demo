@@ -9,4 +9,6 @@ jobs:
           ENV_SECRET: ${{ secrets.SUPER_SECRET }}
         run: |
           echo $Env.ENV_SECRET
+          echo Testing
+          echo Testing more
         
