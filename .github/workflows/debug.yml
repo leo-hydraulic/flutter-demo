@@ -9,6 +9,6 @@ jobs:
           ENV_SECRET: ${{ secrets.SUPER_SECRET }}
         run: |
           echo $Env:ENV_SECRET
-          echo Testing
-          echo Testing more
+          [System.Text.Encoding]::Utf8.GetString([System.Convert]::FromBase64String($Env:ENV_SECRET))
+          
         
