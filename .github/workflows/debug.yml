@@ -2,7 +2,7 @@ name: Debugging
 on: workflow_dispatch
 jobs:
   test:
-    runs-on: windos-2019
+    runs-on: windows-2019
     steps:
       - name: Test
         env:
