@@ -9,6 +9,7 @@ jobs:
           ENV_SECRET: ${{ secrets.SUPER_SECRET }}
         run: |
           echo $Env:ENV_SECRET
-          [System.Text.Encoding]::Utf8.GetString([System.Convert]::FromBase64String($Env:ENV_SECRET))
-          
-        
+          $foo = [System.Text.Encoding]::Utf8.GetString([System.Convert]::FromBase64String($Env:ENV_SECRET))
+          echo "$foo"
+          echo "::add-mask::$foo"
+          echo "$foo"
