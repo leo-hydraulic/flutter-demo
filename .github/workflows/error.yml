@@ -27,4 +27,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: conveyor-log
-          path: .cache/hydraulic/conveyor/logs/log.latest.txt
+          path: ~/.cache/hydraulic/conveyor/logs/log.latest.txt
