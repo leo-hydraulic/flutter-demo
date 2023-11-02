@@ -18,6 +18,11 @@ jobs:
           signing_key: ${{ secrets.SIGNING_KEY }}
           agree_to_license: 1
       - if: ${{ failure() }}
+        name: 'Check tree'
+        run: |
+          tree
+          tree ~          
+      - if: ${{ failure() }}
         name: 'Upload Conveyor log'
         uses: actions/upload-artifact@v3
         with:
