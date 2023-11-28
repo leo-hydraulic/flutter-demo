@@ -9,7 +9,7 @@ jobs:
         uses: actions/checkout@v3
         
       - name: Run Conveyor     
-        uses: .
+        uses: ./
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -18,7 +18,7 @@ jobs:
           agree_to_license: 1
 
       - name: Run Conveyor again 
-        uses: .
+        uses: ./
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
